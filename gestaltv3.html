@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="d3.min.js" type="text/javascript"></script>
+    </head>
+    
+    <body>
+    </body>
+    
+    <script>
+        var width = 450;
+        var height = 450;
+        var i;
+        var start_time = 50;
+        var finish_time = 750;
+         var no_clicks = 0;
+        var circle1 = [],
+            circle2 = [],
+            circle3 = [],
+            circle4 = []; //column 1,2,3,4
+        
+        //initialisation
+        var svgContainer = d3.select("body").append("svg")
+                                            .attr("width", width)
+                                            .attr("height", height);
+        var g = d3.select("svg").append("g")
+                                .attr("width", width)
+                                .attr("height", height);
+        
+        var text = d3.select("svg").append("text")
+                                    .attr("x",width/2)
+                                    .attr("y",350)
+                                    .attr("text-anchor","middle")
+                                    .attr("font-family", "sans-serif")
+                                    .attr("font-size", "20px")
+                                    .attr("fill","gray");
+        
+        initialPosition(); //create circles
+       
+        svgContainer.on("click",function(){
+            no_clicks = no_clicks + 1;
+            switch(no_clicks%12){
+                case 1: proximity(); break;
+                case 2: proximity2(); break;
+                case 3: symmetry(); break;
+                case 4: similarity(); break;
+                case 5: similarity2(); break;
+                case 6: enclosure(); break;
+                case 7: enclosure2(); break;
+                case 8: square_closure(); break;
+                case 9: big_circle_closure(); break;
+                case 10: continuity(); break;
+                case 11: continuity2(); break;
+                case 0: restorePosition(); break;
+            } 
+        });
+        
+
+        function initialPosition(){
+            
+            for(i=1;i<4;i++){
+                circle1[i] = d3.select("g").append("circle")
+                     .attr("cx",width*0.2)
+                     .attr("cy",height*0.2*i)
+                     .attr("r",20)
+                    .attr("fill","gray")
+            }
+            for(i=1;i<4;i++){
+                circle2[i] = d3.select("g").append("circle")
+                     .attr("cx",width*0.4)
+                     .attr("cy",height*0.2*i)
+                     .attr("r",20)
+                    .attr("fill","gray")
+            }
+            for(i=1;i<4;i++){
+                circle3[i] = d3.select("g").append("circle")
+                     .attr("cx",width*0.6)
+                     .attr("cy",height*0.2*i)
+                     .attr("r",20)
+                    .attr("fill","gray")
+            }
+            for(i=1;i<4;i++){
+                circle4[i] = d3.select("g").append("circle")
+                     .attr("cx",width*0.8)
+                     .attr("cy",height*0.2*i)
+                     .attr("r",20)
+                    .attr("fill","gray")
+            }
+            
+            var bigc = d3.select("g").append("circle")
+                                            .attr("fill","none")
+                                            .attr("id","bigc");
+            d3.select("g").append("rect");
+            
+            d3.select("text").text("Gestalt Principles");
+        }
+        
+        function restorePosition(){
+            for(i=1;i<4;i++){
+                circle1[i].transition().delay(start_time)
+                    .attr("cx",width*0.2)
+                    .attr("cy",height*0.2*i)
+                    .attr("r",20).attr("fill","gray");
+                circle2[i].transition().delay(start_time)
+                    .attr("cx",width*0.4)
+                    .attr("cy",height*0.2*i)
+                    .attr("r",20).attr("fill","gray");
+                circle3[i].transition().delay(start_time)
+                    .attr("cx",width*0.6)
+                    .attr("cy",height*0.2*i)
+                    .attr("r",20).attr("fill","gray");
+                circle4[i].transition().delay(start_time)
+                    .attr("cx",width*0.8)
+                    .attr("cy",height*0.2*i)
+                    .attr("r",20).attr("fill","gray");
+            }
+        }
+        
+        function proximity(){
+            //move column 2 circles left
+            for(i=1;i<4;i++){
+                circle2[i].transition().delay(start_time).attr("cx",width*0.3); 
+            }
+            d3.select("text").transition().delay(start_time).text("Proximity");
+            //restore initial position
+            for(i=1;i<4;i++){
+                circle2[i].transition().delay(finish_time).attr("cx",width*0.4);
+            }
+            
+        }
+        
+        function proximity2(){
+            //move row 2 circles up
+            circle1[2].transition().delay(start_time).attr("cy",height*0.3);
+            circle2[2].transition().delay(start_time).attr("cy",height*0.3);
+            circle3[2].transition().delay(start_time).attr("cy",height*0.3);
+            circle4[2].transition().delay(start_time).attr("cy",height*0.3);
+            
+            //restore inital position
+            circle1[2].transition().delay(finish_time).attr("cy",height*0.4);
+            circle2[2].transition().delay(finish_time).attr("cy",height*0.4);
+            circle3[2].transition().delay(finish_time).attr("cy",height*0.4);
+            circle4[2].transition().delay(finish_time).attr("cy",height*0.4);
+            
+        }
+        
+        function symmetry(){
+            //shift column 2,3 to left and right respectively
+            d3.select("text").transition().delay(start_time).text("Symmetry");
+            for(i=1;i<4;i++){
+                circle3[i].transition().delay(start_time).attr("cx",width*0.7);
+            }
+            for(i=1;i<4;i++){
+                circle2[i].transition().delay(start_time).attr("cx",width*0.3);
+            }
+            //restore initial position
+            for(i=1;i<4;i++){
+                circle3[i].transition().delay(finish_time).attr("cx",width*0.6);
+            }
+            for(i=1;i<4;i++){
+                circle2[i].transition().delay(finish_time).attr("cx",width*0.4);
+            }
+        }
+        
+        function similarity(){
+            d3.select("text").transition().delay(start_time).text("Similarity");
+            //colour column 2 circles maroon
+            for(i=1;i<4;i++){
+                circle2[i].transition().delay(start_time).attr("fill","maroon");
+            }
+        }
+        
+        function similarity2(){
+            //recolour circles
+            circle2[1].transition().delay(start_time).attr("fill","gray");
+            
+            circle1[2].transition().delay(start_time).attr("fill","maroon");
+            circle1[3].transition().delay(start_time).attr("fill","maroon");
+        }
+        
+        function enclosure(){
+            //rectanlge enclosure
+            d3.select("rect").transition().delay(start_time)
+                            .attr("width",width*0.4)
+                            .attr("height",height*0.6)
+                            .attr("x",width*0.1)
+                            .attr("y",height*0.1)
+                            .style("stroke", "darkgray")
+                            .style("fill", "none")
+                            .attr("stroke-width", 2);
+            
+            //remove colouring from earlier function
+            d3.select("text").transition().delay(start_time).text("Enclosure");
+            for(i=1;i<4;i++){
+                circle2[i].transition().delay(start_time).attr("fill","gray");
+                circle1[i].transition().delay(start_time).attr("fill","gray")
+            }
+        }
+        
+        function enclosure2(){
+            //resize rectangle enclosure
+            d3.select("rect").transition().delay(start_time).attr("height",height*0.4)
+                .attr("opacity",1);
+        }
+        
+        function square_closure(){
+            //hide enclosure, extra circles
+            d3.select("rect").transition().delay(start_time).attr("opacity",0);
+            
+            d3.select("text").transition().delay(start_time).text("Closure");
+
+            circle2[2].transition().delay(start_time).attr("opacity",0);
+            circle3[2].transition().delay(start_time).attr("opacity",0);
+            circle4[3].transition().delay(start_time).attr("opacity",0);
+            
+            // bring back hidden circles
+            circle2[2].transition().delay(finish_time).attr("opacity",1);
+            circle3[2].transition().delay(finish_time).attr("opacity",1);
+            circle4[3].transition().delay(finish_time).attr("opacity",1);
+            
+        }
+        
+        function big_circle_closure(){
+            
+            var centre_x = width/2;
+            var centre_y = height/2-40;
+            var radius = Math.min(width,height)/2 - 150;
+           //use smaller circles to form a larger circle
+            for (i=1;i<4;i++){
+                circle1[i].transition().delay(start_time)
+                    .attr("cx",centre_x + Math.cos(Math.PI/6*(i-1))*radius)
+                    .attr("cy",centre_y + Math.sin(Math.PI/6*(i-1))*radius);
+            }
+            for (i=1;i<4;i++){
+                circle2[i].transition().delay(start_time)
+                    .attr("cx",centre_x + Math.cos(Math.PI/6*(i-1))*radius)
+                    .attr("cy",centre_y - Math.sin(Math.PI/6*(i-1))*radius);
+                circle2[1].transition().delay(start_time)
+                    .attr("cx",centre_x)
+                    .attr("cy",centre_y + Math.sin(Math.PI/2)*radius);
+            }
+            for (i=1;i<4;i++){
+                circle3[i].transition().delay(start_time)
+                    .attr("cx",centre_x - Math.cos(Math.PI/6*(i-1))*radius)
+                    .attr("cy",centre_y + Math.sin(Math.PI/6*(i-1))*radius);
+            }
+            for (i=1;i<4;i++){
+                circle4[i].transition().delay(start_time)
+                    .attr("cx",centre_x - Math.cos(Math.PI/6*(i-1))*radius)
+                    .attr("cy",centre_y - Math.sin(Math.PI/6*(i-1))*radius);
+            }
+        }
+        
+        function continuity(){
+            var centre_x = width/2;
+            var centre_y = height/2-40;
+            var radius = Math.min(width,height)/2 - 150 ;
+            var x_min = radius*Math.cos(Math.PI/4);
+            var y_min = radius*Math.sin(Math.PI/4);
+            
+            d3.select("#bigc").transition().delay(start_time).attr("cx",centre_x)
+                                            .attr("cy",centre_y)
+                                            .attr("r",radius)
+                                            .attr("fill","maroon");
+            
+            //Line in quadrant 1
+            for (i=1;i<4;i++){
+                circle1[i].transition().delay(start_time)
+                    .attr("cx",centre_x + x_min + 25*i)
+                    .attr("cy",centre_y - y_min - 25*i)
+                    .attr("r",15);
+            }
+            //Line in quadrant 3
+            for (i=1;i<4;i++){
+                circle2[i].transition().delay(start_time)
+                    .attr("cx",centre_x - x_min - 25*i)
+                    .attr("cy",centre_y + y_min + 25*i)
+                    .attr("r",15);
+            }
+            //Make other circles invisibile
+            for (i=1;i<4;i++){
+                circle3[i].transition().delay(start_time)
+                    .attr("fill","none")
+                    .attr("r",15);
+            }
+            for (i=1;i<4;i++){
+                circle4[i].transition().delay(start_time)
+                    .attr("fill","none")
+                    .attr("r",15);;
+            }
+            d3.select("text").transition().delay(start_time).text("Continuity");
+
+        }
+        
+        function continuity2(){
+            //vertical line
+            d3.select("#bigc").transition().delay(start_time).attr("fill","none");
+            for (i=1;i<4;i++){
+                circle3[i].transition().delay(start_time)
+                    .attr("fill","gray")
+                  //  .attr("r",15);
+            }
+            for (i=1;i<4;i++){
+                circle4[i].transition().delay(start_time)
+                    .attr("fill","gray")
+                  //  .attr("r",15);
+            }
+            
+            for (i=1;i<4;i++){
+                circle1[i].transition().delay(start_time*2).attr("cx",width/2).attr("cy",325-40*i);
+            }
+            for (i=1;i<4;i++){
+                circle2[i].transition().delay(start_time*2).attr("cx",width/2).attr("cy",205-40*i).attr("fill","maroon");
+            }
+            //horizontal line
+            for (i=1;i<4;i++){
+                circle3[i].transition().delay(start_time*2).attr("cx",width/2+40*i).attr("cy",85).attr("fill","maroon");
+            }
+            for (i=1;i<4;i++){
+                circle4[i].transition().delay(start_time*2).attr("cx",width/2-40*i).attr("cy",85).attr("fill","gray");
+            }
+        }
+        
+    </script>
+</html>
