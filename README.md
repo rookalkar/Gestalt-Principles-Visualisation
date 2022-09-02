@@ -7,5 +7,3 @@ Enclosure
 Closure
 Continuity
 You can see the video here: https://youtu.be/AVj-unEBzeE
-
-Adding an extra line of code here
