@@ -5,7 +5,7 @@ Symmetry
 Similarity
 Enclosure
 Closure
-Continuity
+Changing the line here from continuity
 You can see the video here: https://youtu.be/AVj-unEBzeE
 
 Adding an extra line of code here and here
