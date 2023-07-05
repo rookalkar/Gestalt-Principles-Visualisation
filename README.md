@@ -7,7 +7,3 @@ Enclosure
 Closure
 Continuity
 You can see the video here: https://youtu.be/AVj-unEBzeE
-
-Second set of change
-
-Third set of change
